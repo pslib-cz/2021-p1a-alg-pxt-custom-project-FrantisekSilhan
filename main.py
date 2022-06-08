@@ -1,9 +1,11 @@
 led.enable(False)
-pin_LS = DigitalPin.P1
+pin_LS = DigitalPin.P7
 pin_LP = DigitalPin.P2
-pin_PP = DigitalPin.P9
+pin_PP = DigitalPin.P1
+#pin_PS = DigitalPin.P9
 wall_const = 0
 speed = 30
+pause_length = 50
 
 def main():
     LS = pins.digital_read_pin(pin_LS) #Levý Střední
@@ -15,6 +17,7 @@ def main():
                 motor_run(speed, -speed, speed, -speed) #rotate right
 
                 LP = pins.digital_read_pin(pin_LP)
+                basic.pause(pause_length)
         else: #přední senzory nedetekují stěnu
             motor_run(speed, speed, speed, speed) #go forward
 
@@ -27,12 +30,18 @@ def main():
 
                 LS = pins.digital_read_pin(pin_LS)
                 LP = pins.digital_read_pin(pin_LP)
+                basic.pause(pause_length)
         else:
             motor_run(0, speed, 0, speed) #rotate left
+    basic.pause(pause_length)
 forever(main)
 
 def motor_run(UpL = 0, UpR = 0, LwL = 0, LwR = 0):
-    mecanumRobot.Motor(LR.Upper_left, MD.FORWARD, Math.constrain(UpL, -100, 100))
-    mecanumRobot.Motor(LR.Upper_right, MD.FORWARD, Math.constrain(UpR, -100, 100))
-    mecanumRobot.Motor(LR.Lower_left, MD.FORWARD, Math.constrain(LwL, -100, 100))
-    mecanumRobot.Motor(LR.Lower_right, MD.FORWARD, Math.constrain(LwR, -100, 100))
+    if UpL >= 0: mecanumRobot.Motor(LR.Upper_left, MD.FORWARD, UpL)
+    else:  mecanumRobot.Motor(LR.Upper_left, MD.BACK, -UpL)
+    if UpR >= 0: mecanumRobot.Motor(LR.Upper_right, MD.FORWARD, UpR)
+    else: mecanumRobot.Motor(LR.Upper_right, MD.BACK, -UpR)
+    if LwL >= 0: mecanumRobot.Motor(LR.Lower_left, MD.FORWARD, LwL)
+    else: mecanumRobot.Motor(LR.Lower_left, MD.BACK, -LwL)
+    if LwR >= 0: mecanumRobot.Motor(LR.Lower_right, MD.FORWARD, LwR)
+    else: mecanumRobot.Motor(LR.Lower_right, MD.BACK, -LwR)
