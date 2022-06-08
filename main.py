@@ -34,14 +34,11 @@ def main():
         else:
             motor_run(0, speed, 0, speed) #rotate left
     basic.pause(pause_length)
-forever(main)
 
 def motor_run(UpL = 0, UpR = 0, LwL = 0, LwR = 0):
-    if UpL >= 0: mecanumRobot.Motor(LR.Upper_left, MD.FORWARD, UpL)
-    else:  mecanumRobot.Motor(LR.Upper_left, MD.BACK, -UpL)
-    if UpR >= 0: mecanumRobot.Motor(LR.Upper_right, MD.FORWARD, UpR)
-    else: mecanumRobot.Motor(LR.Upper_right, MD.BACK, -UpR)
-    if LwL >= 0: mecanumRobot.Motor(LR.Lower_left, MD.FORWARD, LwL)
-    else: mecanumRobot.Motor(LR.Lower_left, MD.BACK, -LwL)
-    if LwR >= 0: mecanumRobot.Motor(LR.Lower_right, MD.FORWARD, LwR)
-    else: mecanumRobot.Motor(LR.Lower_right, MD.BACK, -LwR)
+    mecanumRobot.Motor(LR.Upper_left,  MD.FORWARD if UpL >= 0 else MD.BACK, Math.abs(UpL))
+    mecanumRobot.Motor(LR.Upper_right, MD.FORWARD if UpL >= 0 else MD.BACK, Math.abs(UpR))
+    mecanumRobot.Motor(LR.Lower_left,  MD.FORWARD if UpL >= 0 else MD.BACK, Math.abs(LwL))
+    mecanumRobot.Motor(LR.Lower_right, MD.FORWARD if UpL >= 0 else MD.BACK, Math.abs(LwR))
+
+forever(main)
