@@ -1,3 +1,4 @@
+led.enable(False)
 pin_LS = DigitalPin.P1
 pin_LP = DigitalPin.P2
 pin_PP = DigitalPin.P9
